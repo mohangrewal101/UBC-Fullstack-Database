@@ -21,18 +21,31 @@ describe("InsightFacade", function() {
         });
 
         it("should return one currently added dataset", async function() {
-            insightFacade.addDataset("1", "test", InsightDatasetKind.Courses);
+            insightFacade.addDataset("BIO112", "test", InsightDatasetKind.Courses);
             const result = await insightFacade.listDatasets();
+
             expect(result.length).to.equals(1);
+
+            expect(result[0].id).to.equals("BIO112");
+            expect(result[0].numRows).to.equals(1);
+            expect(result[0].kind).to.equals(InsightDatasetKind.Courses);
 
         });
 
         it("should return multiple currently added datasets", async function() {
-            insightFacade.addDataset("1", "test", InsightDatasetKind.Courses);
-            insightFacade.addDataset("2", "test2", InsightDatasetKind.Courses);
-            insightFacade.addDataset("3", "test3", InsightDatasetKind.Courses);
+            insightFacade.addDataset("BIO112", "test", InsightDatasetKind.Courses);
+            insightFacade.addDataset("ANTH317A", "test2", InsightDatasetKind.Courses);
             const result = await insightFacade.listDatasets();
-            expect(result.length).to.equals(3);
+
+            expect(result.length).to.equals(2);
+
+            expect(result[0].id).to.equals("BIO112");
+            expect(result[0].numRows).to.equals(1);
+            expect(result[0].kind).to.equals(InsightDatasetKind.Courses);
+
+            expect(result[1].id).to.equals("ANTH317A");
+            expect(result[1].numRows).to.equals(1);
+            expect(result[1].kind).to.equals(InsightDatasetKind.Courses);
         });
 
     });
