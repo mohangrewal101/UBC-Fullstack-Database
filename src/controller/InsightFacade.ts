@@ -1,4 +1,4 @@
-import {IInsightFacade, InsightDatasetKind, InsightDataset} from "./IInsightFacade"
+import {IInsightFacade, InsightDataset, InsightDatasetKind} from "./IInsightFacade";
 
 export default class InsightFacade implements IInsightFacade{
 
