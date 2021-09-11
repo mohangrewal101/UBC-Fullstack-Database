@@ -1,7 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.InsightFacade = void 0;
-class InsightFacade extends IInsightFacade {
+class InsightFacade {
     addDataset(id, content, kind) {
         return Promise.reject();
     }
@@ -15,4 +14,4 @@ class InsightFacade extends IInsightFacade {
         return Promise.reject();
     }
 }
-exports.InsightFacade = InsightFacade;
+exports.default = InsightFacade;
