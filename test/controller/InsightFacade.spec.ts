@@ -1,7 +1,6 @@
 import {InsightDatasetKind} from "../../src/controller/IInsightFacade";
 import InsightFacade from "../../src/controller/InsightFacade";
 import {expect} from "chai";
-import * as JSZip from "jszip";
 
 describe("InsightFacade", function() {
     describe("addDataset", function() {
