@@ -1,6 +1,7 @@
 import {InsightDatasetKind} from "../../src/controller/IInsightFacade";
 import InsightFacade from "../../src/controller/InsightFacade";
-import {expect} from "chai";
+import {assert, expect} from "chai";
+import {rejects} from "assert";
 
 describe("InsightFacade", function() {
     describe("addDataset", function() {
@@ -22,15 +23,15 @@ describe("InsightFacade", function() {
 
         it("should return one currently added dataset", function() {
             insightFacade.addDataset("BIO112", "test", InsightDatasetKind.Courses);
-            //SHOULD NOT PASS!!!!!
             insightFacade.listDatasets().then((result) => {
                 expect(result.length).to.equals(1);
 
                 expect(result[0].id).to.equals("BIO112");
                 expect(result[0].numRows).to.equals(1);
                 expect(result[0].kind).to.equals(InsightDatasetKind.Courses);
-
-            })
+                return;
+            });
+            assert.fail("Failed to Return One Dataset");
 
         });
 
@@ -48,7 +49,9 @@ describe("InsightFacade", function() {
                 expect(result[1].id).to.equals("ANTH317A");
                 expect(result[1].numRows).to.equals(1);
                 expect(result[1].kind).to.equals(InsightDatasetKind.Courses);
+                return;
             });
+            assert.fail("Failed to Return Multiple Datasets");
         });
 
     });
