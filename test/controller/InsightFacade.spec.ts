@@ -22,12 +22,13 @@ describe("InsightFacade", function() {
 
         it("should return one currently added dataset", function() {
             insightFacade.addDataset("BIO112", "test", InsightDatasetKind.Courses);
+            //SHOULD NOT PASS!!!!!
             insightFacade.listDatasets().then((result) => {
-                expect(result.length).to.deep.equals(1);
+                expect(result.length).to.equals(1);
 
-                expect(result[0].id).to.deep.equals("BIO112");
-                expect(result[0].numRows).to.deep.equals(1);
-                expect(result[0].kind).to.deep.equals(InsightDatasetKind.Courses);
+                expect(result[0].id).to.equals("BIO112");
+                expect(result[0].numRows).to.equals(1);
+                expect(result[0].kind).to.equals(InsightDatasetKind.Courses);
 
             })
 
