@@ -1,12 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const IInsightFacade_1 = require("./IInsightFacade");
 class InsightFacade {
     addDataset(id, content, kind) {
         return Promise.reject();
     }
     removeDataset(id) {
-        return Promise.reject(IInsightFacade_1.InsightError);
+        return Promise.reject();
     }
     performQuery(query) {
         return Promise.reject();
