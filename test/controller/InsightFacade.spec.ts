@@ -4,7 +4,12 @@ import {expect} from "chai";
 
 describe("InsightFacade", function() {
     describe("addDataset", function() {
+        let insightFacade: InsightFacade;
+        beforeEach(function () {
+            insightFacade = new InsightFacade();
+        });
 
+        
     });
 
     describe("removeDataset", function() {
@@ -30,13 +35,17 @@ describe("InsightFacade", function() {
             insightFacade.addDataset("science",
                 convertToBase64("test/resources/archives/Dataset2/courses.zip"), InsightDatasetKind.Courses);
 
-            insightFacade.removeDataset("arts").catch((error) => {
+            return insightFacade.removeDataset("arts").then((result) => {
+                expect.fail("Failed to throw NotFoundError");
+            }).catch((error) => {
                 expect(error).to.equals(NotFoundError);
             });
         });
 
         it("should catch NotFoundError for attempting to remove dataset when list is empty", function () {
-            insightFacade.removeDataset("ubc").catch((error) => {
+            return insightFacade.removeDataset("ubc").then((result) => {
+                expect.fail("Failed to throw NotFoundError");
+            }).catch((error) => {
                 expect(error).to.equals(NotFoundError);
             });
         });
@@ -47,7 +56,9 @@ describe("InsightFacade", function() {
             insightFacade.addDataset("science",
                 convertToBase64("test/resources/archives/Dataset2/courses.zip"), InsightDatasetKind.Courses);
 
-            return insightFacade.removeDataset("ubc_").catch((error) => {
+            return insightFacade.removeDataset("ubc_").then((result) => {
+                expect.fail("Failed to throw InsightError");
+            }).catch((error) => {
                 expect(error).to.equals(InsightError);
             });
         });
@@ -58,9 +69,10 @@ describe("InsightFacade", function() {
             insightFacade.addDataset("science",
                 convertToBase64("test/resources/archives/Dataset2/courses.zip"), InsightDatasetKind.Courses);
 
-            return insightFacade.removeDataset("").catch((error) => {
+            return insightFacade.removeDataset("").then((result) => {
+                expect.fail("Failed to throw InsightError");
+            }).catch((error) => {
                 expect(error).to.equals(InsightError);
-                return;
             });
         });
 
@@ -79,10 +91,9 @@ describe("InsightFacade", function() {
 
         it("should return zero datasets", function() {
             return insightFacade.listDatasets().then((result) => {
-                expect(result.length).to.equals(0);
+                expect.fail("Failed to Not Return Zero Datasets");
             });
-        });
-
+        })
         it("should return one currently added dataset", function() {
             insightFacade.addDataset("ubc",
                 convertToBase64("test/resources/archives/Dataset1/courses.zip"), InsightDatasetKind.Courses);
