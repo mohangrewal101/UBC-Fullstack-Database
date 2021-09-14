@@ -161,7 +161,7 @@ describe("InsightFacade", function () {
             }).then(() => {
                 expect.fail("Failed to throw InsightError");
             }).catch((error) => {
-                expect(error).to.be.instanceof(InsightError);
+                expect(error).to.equals(InsightError);
             });
         });
 

@@ -1,4 +1,4 @@
-import {IInsightFacade, InsightDataset, InsightDatasetKind, InsightError} from "./IInsightFacade";
+import {IInsightFacade, InsightDataset, InsightDatasetKind, InsightError, NotFoundError} from "./IInsightFacade";
 
 export default class InsightFacade implements IInsightFacade{
 
@@ -7,7 +7,7 @@ export default class InsightFacade implements IInsightFacade{
     }
 
     removeDataset(id: string): Promise<string> {
-    return Promise.reject(new InsightError());
+    return Promise.reject();
     }
 
     performQuery(query: any): Promise<any[]> {
