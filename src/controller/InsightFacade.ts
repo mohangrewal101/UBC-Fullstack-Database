@@ -1,9 +1,9 @@
-import {IInsightFacade, InsightDataset, InsightDatasetKind} from "./IInsightFacade";
+import {IInsightFacade, InsightDataset, InsightDatasetKind, InsightError} from "./IInsightFacade";
 
 export default class InsightFacade implements IInsightFacade{
 
     addDataset(id: string, content: string, kind: InsightDatasetKind): Promise<string[]> {
-    return Promise.reject();
+    return Promise.reject(new InsightError);
     }
 
     removeDataset(id: string): Promise<string> {

@@ -1,7 +1,16 @@
-import {InsightDatasetKind, InsightError, NotFoundError} from "../../src/controller/IInsightFacade";
+import {InsightDataset, InsightDatasetKind, InsightError, NotFoundError} from "../../src/controller/IInsightFacade";
 import InsightFacade from "../../src/controller/InsightFacade";
-import {expect} from "chai";
+import chai, {expect} from "chai";
+import chaiAsPromised from "chai-as-promised";
+import {testFolder} from "@ubccpsc310/folder-test";
 
+chai.use(chaiAsPromised);
+
+type Input = any;
+type Output = Promise<any[]>;
+type Error = any;
+
+let insightFacade: InsightFacade
 describe("InsightFacade", function () {
     describe("addDataset", function () {
         let insightFacade: InsightFacade;
@@ -43,7 +52,7 @@ describe("InsightFacade", function () {
                     InsightDatasetKind.Courses).then(() => {
                     expect.fail("Failed to throw InsightError");
                 }).catch((error) => {
-                    expect(error).to.deep.equals(InsightError);
+                    expect(error).to.be.instanceof(InsightError);
                 });
             });
 
@@ -55,7 +64,7 @@ describe("InsightFacade", function () {
                 InsightDatasetKind.Courses).then(() => {
                 expect.fail("Failed to throw InsightError");
             }).catch((error) => {
-                expect(error).to.deep.equals(InsightError);
+                expect(error).to.be.instanceof(InsightError);
             });
         });
 
@@ -63,13 +72,9 @@ describe("InsightFacade", function () {
             return insightFacade.addDataset("",
                 convertToBase64("test/resources/archives/Dataset2/courses.zip"),
                 InsightDatasetKind.Courses).then(() => {
-                insightFacade.addDataset("ubc",
-                    convertToBase64("test/resources/archives/Dataset1/courses.zip"),
-                    InsightDatasetKind.Courses).then(() => {
-                    expect.fail("Failed to throw InsightError");
-                }).catch((error) => {
-                    expect(error).to.deep.equals(InsightError);
-                });
+                expect.fail("Failed to throw InsightError");
+            }).catch((error) => {
+                expect(error).to.be.instanceof(InsightError);
             });
         });
 
@@ -79,7 +84,7 @@ describe("InsightFacade", function () {
                 InsightDatasetKind.Courses).then(() => {
                 expect.fail("Failed to throw InsightError");
             }).catch((error) => {
-                expect(error).to.deep.equals(InsightError);
+                expect(error).to.be.instanceof(InsightError);
             });
         })
 
@@ -99,7 +104,7 @@ describe("InsightFacade", function () {
                     convertToBase64("test/resources/archives/Dataset2/courses.zip"),
                     InsightDatasetKind.Courses).then(() => {
                     insightFacade.removeDataset("ubc").then((result) => {
-                        expect(result).to.deep.equals("ubc");
+                        expect(result).to.be.instanceof("ubc");
                     });
                 });
             });
@@ -115,7 +120,7 @@ describe("InsightFacade", function () {
                     insightFacade.removeDataset("arts").then(() => {
                         expect.fail("Failed to throw NotFoundError");
                     }).catch((error) => {
-                        expect(error).to.deep.equals(NotFoundError);
+                        expect(error).to.be.instanceof(NotFoundError);
                     });
                 });
             });
@@ -125,12 +130,12 @@ describe("InsightFacade", function () {
             return insightFacade.removeDataset("ubc").then(() => {
                 expect.fail("Failed to throw NotFoundError");
             }).catch((error) => {
-                expect(error).to.deep.equals(NotFoundError);
+                expect(error).to.be.instanceof(NotFoundError);
             });
         });
 
         it("should reject with InsightError for underscore invalid ID", function () {
-            return insightFacade.addDataset("ubc",
+            return insightFacade.addDataset("ubc_",
                 convertToBase64("test/resources/archives/Dataset1/courses.zip"),
                 InsightDatasetKind.Courses).then(() => {
                 insightFacade.addDataset("science",
@@ -139,7 +144,7 @@ describe("InsightFacade", function () {
                     insightFacade.removeDataset("ubc_").then(() => {
                         expect.fail("Failed to throw InsightError");
                     }).catch((error) => {
-                        expect(error).to.deep.equals(InsightError);
+                        expect(error).to.be.instanceof(InsightError);
                     });
                 });
             });
@@ -155,7 +160,7 @@ describe("InsightFacade", function () {
                     insightFacade.removeDataset("").then(() => {
                         expect.fail("Failed to throw InsightError");
                     }).catch((error) => {
-                        expect(error).to.deep.equals(InsightError);
+                        expect(error).to.be.instanceof(InsightError);
                     });
                 });
             });
@@ -163,11 +168,21 @@ describe("InsightFacade", function () {
     });
 
     describe("performQuery", function () {
+        let insightFacade: InsightFacade;
+        beforeEach(function () {
+            insightFacade = new InsightFacade();
+        });
+
+        it("should return array of correct results from given query", function() {
+            return insightFacade.addDataset("ubc",
+                convertToBase64("test/resources/archives/Dataset1/courses.zip"),
+                InsightDatasetKind.Courses).then(() => {
+
+            });
+        });
     });
 
     describe("listDatasets", function () {
-
-        let insightFacade: InsightFacade;
         beforeEach(function () {
             insightFacade = new InsightFacade();
         });
@@ -179,6 +194,11 @@ describe("InsightFacade", function () {
         })
 
         it("should return one currently added dataset", function () {
+            const expected : InsightDataset = {
+                id: "ubc",
+                kind: InsightDatasetKind.Courses,
+                numRows: 64612
+            }
             return insightFacade.addDataset("ubc",
                 convertToBase64("test/resources/archives/Dataset1/courses.zip"),
                 InsightDatasetKind.Courses).then(() => {
@@ -186,14 +206,25 @@ describe("InsightFacade", function () {
                     expect(result).to.be.an.instanceof(Array);
                     expect(result).to.have.length(1);
 
-                    expect(result[0].id).to.deep.equals("ubc");
-                    expect(result[0].numRows).to.deep.equals(64612);
-                    expect(result[0].kind).to.deep.equals(InsightDatasetKind.Courses);
+                    expect(result[0]).to.deep.equals(expected);
                 });
             });
         });
 
         it("should return multiple currently added datasets", function () {
+            const dataset1 : InsightDataset = {
+                id: "ubc",
+                kind: InsightDatasetKind.Courses,
+                numRows: 64612
+            }
+
+            const dataset2 : InsightDataset = {
+                id: "science",
+                kind: InsightDatasetKind.Courses,
+                numRows: 3
+            }
+
+            const expected = [dataset1, dataset2];
             return insightFacade.addDataset("ubc",
                 convertToBase64("test/resources/archives/Dataset1/courses.zip"),
                 InsightDatasetKind.Courses).then(() => {
@@ -204,13 +235,7 @@ describe("InsightFacade", function () {
                         expect(result).to.be.an.instanceof(Array);
                         expect(result).to.have.length(2);
 
-                        expect(result[0].id).to.deep.equals("ubc");
-                        expect(result[0].numRows).to.deep.equals(64612);
-                        expect(result[0].kind).to.deep.equals(InsightDatasetKind.Courses);
-
-                        expect(result[1].id).to.deep.equals("science");
-                        expect(result[1].numRows).to.deep.equals(3);
-                        expect(result[1].kind).to.deep.equals(InsightDatasetKind.Courses);
+                        expect(result).to.deep.equals(expected);
 
                     });
                 });
@@ -224,5 +249,13 @@ function convertToBase64(filePath: string): string {
     const fs = require('fs');
     return fs.readFileSync(filePath, {encoding: 'base64'});
 }
+
+testFolder<Input, Output, Error>(
+    "Add Dynamic Tests",
+    (input: Input): Output => {
+        const insightFacade = new InsightFacade();
+        return insightFacade.performQuery(input);
+    },
+    "test/resources/queries")
 
 
