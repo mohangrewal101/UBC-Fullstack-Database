@@ -3,7 +3,7 @@ import {IInsightFacade, InsightDataset, InsightDatasetKind, InsightError} from "
 export default class InsightFacade implements IInsightFacade{
 
     addDataset(id: string, content: string, kind: InsightDatasetKind): Promise<string[]> {
-    return Promise.reject(new InsightError);
+    return Promise.reject();
     }
 
     removeDataset(id: string): Promise<string> {

@@ -44,16 +44,16 @@ describe("InsightFacade", function () {
         });
 
         it("should reject with InsightError when dataset has same id", function () {
-            return insightFacade.addDataset("ubc",
-                convertToBase64("test/resources/archives/Dataset2/courses.zip"),
-                InsightDatasetKind.Courses).then(() => {
-                insightFacade.addDataset("ubc",
-                    convertToBase64("test/resources/archives/Dataset1/courses.zip"),
-                    InsightDatasetKind.Courses).then(() => {
-                    expect.fail("Failed to throw InsightError");
-                }).catch((error) => {
-                    expect(error).to.be.instanceof(InsightError);
-                });
+            const promise1 = insightFacade.addDataset("ubc",
+                convertToBase64("test/resources/archives/Dataset2/courses.zip"), InsightDatasetKind.Courses);
+            const promise2 = insightFacade.addDataset("ubc",
+                convertToBase64("test/resources/archives/Dataset1/courses.zip"), InsightDatasetKind.Courses);
+            return promise1.then(() => {
+                return promise2;
+            }).then(() => {
+                expect.fail("Failed to throw InsightError");
+            }).catch((error) => {
+                expect(error).to.be.instanceof(InsightError);
             });
 
         });
@@ -135,7 +135,7 @@ describe("InsightFacade", function () {
         });
 
         it("should reject with InsightError for underscore invalid ID", function () {
-            return insightFacade.addDataset("ubc_",
+            return insightFacade.addDataset("ubc",
                 convertToBase64("test/resources/archives/Dataset1/courses.zip"),
                 InsightDatasetKind.Courses).then(() => {
                 insightFacade.addDataset("science",
@@ -173,7 +173,7 @@ describe("InsightFacade", function () {
             insightFacade = new InsightFacade();
         });
 
-        it("should return array of correct results from given query", function() {
+        it("should return array of correct results from given query", function () {
             return insightFacade.addDataset("ubc",
                 convertToBase64("test/resources/archives/Dataset1/courses.zip"),
                 InsightDatasetKind.Courses).then(() => {
@@ -194,7 +194,7 @@ describe("InsightFacade", function () {
         })
 
         it("should return one currently added dataset", function () {
-            const expected : InsightDataset = {
+            const expected: InsightDataset = {
                 id: "ubc",
                 kind: InsightDatasetKind.Courses,
                 numRows: 64612
@@ -212,13 +212,13 @@ describe("InsightFacade", function () {
         });
 
         it("should return multiple currently added datasets", function () {
-            const dataset1 : InsightDataset = {
+            const dataset1: InsightDataset = {
                 id: "ubc",
                 kind: InsightDatasetKind.Courses,
                 numRows: 64612
             }
 
-            const dataset2 : InsightDataset = {
+            const dataset2: InsightDataset = {
                 id: "science",
                 kind: InsightDatasetKind.Courses,
                 numRows: 3
