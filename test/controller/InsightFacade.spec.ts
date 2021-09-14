@@ -30,20 +30,23 @@ describe("InsightFacade", function () {
 
         it("should add dataset when list contains datasets and return array with ids", function () {
             let expectedStrings = ["science", "ubc"];
-            return insightFacade.addDataset("science",
-                convertToBase64("test/resources/archives/Dataset2/courses.zip"),
-                InsightDatasetKind.Courses).then(() => {
-                insightFacade.addDataset("ubc",
-                    convertToBase64("test/resources/archives/Dataset1/courses.zip"),
-                    InsightDatasetKind.Courses).then((result) => {
-                    expect(result).to.be.an.instanceof(Array);
-                    expect(result).to.be.of.length(2);
-                    expect(result).to.have.deep.members(expectedStrings);
-                });
+
+            const promise1 = insightFacade.addDataset("science",
+                convertToBase64("test/resources/archives/Dataset2/courses.zip"), InsightDatasetKind.Courses);
+            const promise2 = insightFacade.addDataset("ubc",
+                convertToBase64("test/resources/archives/Dataset1/courses.zip"), InsightDatasetKind.Courses);
+
+            return promise1.then(() => {
+                return promise2;
+            }).then((result) => {
+                expect(result).to.be.an.instanceof(Array);
+                expect(result).to.be.of.length(2);
+                expect(result).to.have.deep.members(expectedStrings);
             });
         });
 
         it("should reject with InsightError when dataset has same id", function () {
+
             const promise1 = insightFacade.addDataset("ubc",
                 convertToBase64("test/resources/archives/Dataset2/courses.zip"), InsightDatasetKind.Courses);
             const promise2 = insightFacade.addDataset("ubc",
@@ -97,32 +100,41 @@ describe("InsightFacade", function () {
         });
 
         it("should identify and remove the correct dataset", function () {
-            return insightFacade.addDataset("ubc",
-                convertToBase64("test/resources/archives/Dataset1/courses.zip"),
-                InsightDatasetKind.Courses).then(() => {
-                insightFacade.addDataset("science",
-                    convertToBase64("test/resources/archives/Dataset2/courses.zip"),
-                    InsightDatasetKind.Courses).then(() => {
-                    insightFacade.removeDataset("ubc").then((result) => {
-                        expect(result).to.be.instanceof("ubc");
-                    });
-                });
+
+            const promise1 = insightFacade.addDataset("ubc",
+                convertToBase64("test/resources/archives/Dataset1/courses.zip"), InsightDatasetKind.Courses);
+            const promise2 = insightFacade.addDataset("science",
+                convertToBase64("test/resources/archives/Dataset2/courses.zip"),
+                InsightDatasetKind.Courses);
+            const promise3 = insightFacade.removeDataset("ubc");
+
+            return promise1.then(() => {
+                return promise2;
+            }).then(() => {
+                return promise3;
+            }).then((result) => {
+                expect(result).to.be.instanceof("ubc");
             });
         });
 
         it("should reject with NotFoundError for attempting to remove a dataset not added yet", function () {
-            return insightFacade.addDataset("ubc",
+
+            const promise1 = insightFacade.addDataset("ubc",
                 convertToBase64("test/resources/archives/Dataset1/courses.zip"),
-                InsightDatasetKind.Courses).then(() => {
-                insightFacade.addDataset("science",
-                    convertToBase64("test/resources/archives/Dataset2/courses.zip"),
-                    InsightDatasetKind.Courses).then(() => {
-                    insightFacade.removeDataset("arts").then(() => {
-                        expect.fail("Failed to throw NotFoundError");
-                    }).catch((error) => {
-                        expect(error).to.be.instanceof(NotFoundError);
-                    });
-                });
+                InsightDatasetKind.Courses);
+            const promise2 = insightFacade.addDataset("science",
+                convertToBase64("test/resources/archives/Dataset2/courses.zip"),
+                InsightDatasetKind.Courses);
+            const promise3 = insightFacade.removeDataset("arts");
+
+            return promise1.then(() => {
+                return promise2;
+            }).then(() => {
+                return promise3;
+            }).then(() => {
+                expect.fail("Failed to throw NotFoundError");
+            }).catch((error) => {
+                expect(error).to.be.instanceof(NotFoundError);
             });
         });
 
@@ -135,34 +147,40 @@ describe("InsightFacade", function () {
         });
 
         it("should reject with InsightError for underscore invalid ID", function () {
-            return insightFacade.addDataset("ubc",
-                convertToBase64("test/resources/archives/Dataset1/courses.zip"),
-                InsightDatasetKind.Courses).then(() => {
-                insightFacade.addDataset("science",
-                    convertToBase64("test/resources/archives/Dataset2/courses.zip"),
-                    InsightDatasetKind.Courses).then(() => {
-                    insightFacade.removeDataset("ubc_").then(() => {
-                        expect.fail("Failed to throw InsightError");
-                    }).catch((error) => {
-                        expect(error).to.be.instanceof(InsightError);
-                    });
-                });
+
+            const promise1 = insightFacade.addDataset("ubc",
+                convertToBase64("test/resources/archives/Dataset1/courses.zip"), InsightDatasetKind.Courses);
+            const promise2 = insightFacade.addDataset("science",
+                convertToBase64("test/resources/archives/Dataset2/courses.zip"), InsightDatasetKind.Courses);
+            const promise3 = insightFacade.removeDataset("ubc_");
+
+            return promise1.then(() => {
+                return promise2;
+            }).then(() => {
+                return promise3;
+            }).then(() => {
+                expect.fail("Failed to throw InsightError");
+            }).catch((error) => {
+                expect(error).to.be.instanceof(InsightError);
             });
         });
 
         it("should reject with InsightError for whitespace invalid ID", function () {
-            return insightFacade.addDataset("ubc",
-                convertToBase64("test/resources/archives/Dataset1/courses.zip"),
-                InsightDatasetKind.Courses).then(() => {
-                insightFacade.addDataset("science",
-                    convertToBase64("test/resources/archives/Dataset2/courses.zip"),
-                    InsightDatasetKind.Courses).then(() => {
-                    insightFacade.removeDataset("").then(() => {
-                        expect.fail("Failed to throw InsightError");
-                    }).catch((error) => {
-                        expect(error).to.be.instanceof(InsightError);
-                    });
-                });
+
+            const promise1 = insightFacade.addDataset("ubc",
+                convertToBase64("test/resources/archives/Dataset1/courses.zip"), InsightDatasetKind.Courses);
+            const promise2 = insightFacade.addDataset("science",
+                convertToBase64("test/resources/archives/Dataset2/courses.zip"), InsightDatasetKind.Courses);
+            const promise3 = insightFacade.removeDataset("");
+
+            return promise1.then(() => {
+                return promise2;
+            }).then(() => {
+                return promise3;
+            }).then(() => {
+                expect.fail("Failed to throw InsightError");
+            }).catch((error) => {
+                expect(error).to.be.instanceof(InsightError);
             });
         });
     });
@@ -199,15 +217,18 @@ describe("InsightFacade", function () {
                 kind: InsightDatasetKind.Courses,
                 numRows: 64612
             }
-            return insightFacade.addDataset("ubc",
-                convertToBase64("test/resources/archives/Dataset1/courses.zip"),
-                InsightDatasetKind.Courses).then(() => {
-                insightFacade.listDatasets().then((result) => {
-                    expect(result).to.be.an.instanceof(Array);
-                    expect(result).to.have.length(1);
 
-                    expect(result[0]).to.deep.equals(expected);
-                });
+            const promise1 = insightFacade.addDataset("ubc",
+                convertToBase64("test/resources/archives/Dataset1/courses.zip"), InsightDatasetKind.Courses);
+            const promise2 = insightFacade.listDatasets();
+
+            return promise1.then(() => {
+                return promise2;
+            }).then((result) => {
+                expect(result).to.be.an.instanceof(Array);
+                expect(result).to.have.length(1);
+
+                expect(result[0]).to.deep.equals(expected);
             });
         });
 
@@ -224,21 +245,24 @@ describe("InsightFacade", function () {
                 numRows: 3
             }
 
+            const promise1 = insightFacade.addDataset("ubc",
+                convertToBase64("test/resources/archives/Dataset1/courses.zip"), InsightDatasetKind.Courses);
+            const promise2 = insightFacade.addDataset("science",
+                convertToBase64("test/resources/archives/Dataset2/courses.zip"), InsightDatasetKind.Courses);
+            const promise3 = insightFacade.listDatasets();
+
             const expected = [dataset1, dataset2];
-            return insightFacade.addDataset("ubc",
-                convertToBase64("test/resources/archives/Dataset1/courses.zip"),
-                InsightDatasetKind.Courses).then(() => {
-                insightFacade.addDataset("science",
-                    convertToBase64("test/resources/archives/Dataset2/courses.zip"),
-                    InsightDatasetKind.Courses).then(() => {
-                    insightFacade.listDatasets().then((result) => {
-                        expect(result).to.be.an.instanceof(Array);
-                        expect(result).to.have.length(2);
 
-                        expect(result).to.deep.equals(expected);
+            return promise1.then(() => {
+                return promise2;
+            }).then(() => {
+                return promise3;
+            }).then((result) => {
+                expect(result).to.be.an.instanceof(Array);
+                expect(result).to.have.length(2);
 
-                    });
-                });
+                expect(result).to.deep.equals(expected);
+
             });
         });
     });
