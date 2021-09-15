@@ -50,7 +50,8 @@ describe("InsightFacade", function () {
 
             return insightFacade.addDataset("ubc",
                 convertToBase64("test/resources/archives/Dataset2/courses.zip"),
-                InsightDatasetKind.Courses).then(() => {
+                InsightDatasetKind.Courses)
+                .then(() => {
                 return insightFacade.addDataset("ubc",
                     convertToBase64("test/resources/archives/Dataset1/courses.zip"),
                     InsightDatasetKind.Courses);
@@ -108,10 +109,6 @@ describe("InsightFacade", function () {
             return insightFacade.addDataset("ubc",
                 convertToBase64("test/resources/archives/Dataset1/courses.zip"),
                 InsightDatasetKind.Courses).then(() => {
-                return insightFacade.addDataset("science",
-                    convertToBase64("test/resources/archives/Dataset2/courses.zip"),
-                    InsightDatasetKind.Courses);
-            }).then(() => {
                 return insightFacade.removeDataset("ubc");
             }).then((result) => {
                 expect(result).to.deep.equals("ubc");

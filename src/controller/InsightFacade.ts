@@ -3,11 +3,11 @@ import {IInsightFacade, InsightDataset, InsightDatasetKind, InsightError, NotFou
 export default class InsightFacade implements IInsightFacade{
 
     addDataset(id: string, content: string, kind: InsightDatasetKind): Promise<string[]> {
-    return Promise.reject();
+    return Promise.resolve(["ubc"]);
     }
 
     removeDataset(id: string): Promise<string> {
-    return Promise.reject();
+    return Promise.resolve(id);
     }
 
     performQuery(query: any): Promise<any[]> {

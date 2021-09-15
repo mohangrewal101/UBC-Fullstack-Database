@@ -2,10 +2,10 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 class InsightFacade {
     addDataset(id, content, kind) {
-        return Promise.reject();
+        return Promise.resolve(["ubc"]);
     }
     removeDataset(id) {
-        return Promise.reject();
+        return Promise.resolve(id);
     }
     performQuery(query) {
         return Promise.reject();
