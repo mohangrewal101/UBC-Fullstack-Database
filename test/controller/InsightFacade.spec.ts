@@ -47,7 +47,7 @@ describe("InsightFacade", function () {
         });
 
         it("should reject with InsightError when dataset has same id", function () {
-            
+
             return insightFacade.addDataset("ubc",
                 convertToBase64("test/resources/archives/Dataset2/courses.zip"),
                 InsightDatasetKind.Courses).then(() => {
@@ -266,7 +266,7 @@ function convertToBase64(filePath: string): string {
 
 function clearDatasets(): void {
     const fs = require('fs-extra');
-    fs.removeSync("data");
+    fs.removeSync("../../data");
 }
 
 testFolder<Input, Output, Error>(
