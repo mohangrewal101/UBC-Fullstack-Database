@@ -272,12 +272,4 @@ function clearDatasets(): void {
     fs.removeSync("data");
 }
 
-testFolder<Input, Output, Error>(
-    "Add Dynamic Tests",
-    (input: Input): Output => {
-        const insightFacade = new InsightFacade();
-        return insightFacade.performQuery(input);
-    },
-    "test/resources/queries")
-
 
