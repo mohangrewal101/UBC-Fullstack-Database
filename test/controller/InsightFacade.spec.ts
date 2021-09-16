@@ -33,7 +33,7 @@ describe("InsightFacade", function () {
             });
         });
 
-        it("should add dataset when list contains dataset and return array with ids", function () {
+        it("should add dataset when list contains datasets and return array with ids", function () {
             let expectedStrings = ["science", "ubc"];
             return insightFacade.addDataset("science",
                 convertToBase64("test/resources/archives/Dataset1/courses.zip"),
