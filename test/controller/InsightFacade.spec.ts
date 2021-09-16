@@ -3,6 +3,7 @@ import InsightFacade from "../../src/controller/InsightFacade";
 import chai, {expect} from "chai";
 import chaiAsPromised from "chai-as-promised";
 import {testFolder} from "@ubccpsc310/folder-test";
+import exp = require("constants");
 
 chai.use(chaiAsPromised);
 
@@ -203,9 +204,7 @@ describe("InsightFacade", function () {
         });
 
         it("should return zero datasets", function () {
-            return insightFacade.listDatasets().then(() => {
-                expect.fail("Failed to Not Return Zero Datasets");
-            });
+            return insightFacade.listDatasets().should.be.rejected;
         })
 
         it("should return one currently added dataset", function () {
@@ -235,9 +234,9 @@ describe("InsightFacade", function () {
             }
 
             const dataset2: InsightDataset = {
-                id: "science",
+                id: "ubcCourses",
                 kind: InsightDatasetKind.Courses,
-                numRows: 3
+                numRows: 64612
             }
 
             const expected = [dataset1, dataset2];
@@ -246,15 +245,15 @@ describe("InsightFacade", function () {
             return insightFacade.addDataset("ubc",
                 convertToBase64("test/resources/archives/Dataset1/courses.zip"),
                 InsightDatasetKind.Courses).then(() => {
-                return insightFacade.addDataset("science",
-                    convertToBase64("test/resources/archives/Dataset2/courses.zip"), InsightDatasetKind.Courses);
+                return insightFacade.addDataset("ubcCourses",
+                    convertToBase64("test/resources/archives/Dataset1/courses.zip"), InsightDatasetKind.Courses);
             }).then(() => {
                 return insightFacade.listDatasets();
             }).then((result) => {
                 expect(result).to.be.an.instanceof(Array);
                 expect(result).to.have.length(2);
 
-                expect(result).to.deep.equals(expected);
+                expect(result).to.be.equals(expected);
 
             });
         });
