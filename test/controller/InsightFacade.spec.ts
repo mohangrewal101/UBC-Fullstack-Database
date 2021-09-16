@@ -14,6 +14,8 @@ let insightFacade: InsightFacade
 describe("InsightFacade", function () {
     describe("addDataset", function () {
         beforeEach(function () {
+            clearDatasets();
+            addDataDirectory();
             insightFacade = new InsightFacade();
         });
 
@@ -74,7 +76,7 @@ describe("InsightFacade", function () {
         });
 
         it("should reject with InsightError when dataset has an whitespace id", function () {
-            return insightFacade.addDataset("data set",
+            return insightFacade.addDataset(" ",
                 convertToBase64("test/resources/archives/Dataset2/courses.zip"),
                 InsightDatasetKind.Courses).then(() => {
                 expect.fail("Failed to throw InsightError");
@@ -97,6 +99,8 @@ describe("InsightFacade", function () {
 
     describe("removeDataset", function () {
         beforeEach(function () {
+            clearDatasets();
+            addDataDirectory();
             insightFacade = new InsightFacade();
         });
 
@@ -109,9 +113,9 @@ describe("InsightFacade", function () {
             return insightFacade.addDataset("ubc",
                 convertToBase64("test/resources/archives/Dataset1/courses.zip"),
                 InsightDatasetKind.Courses).then(() => {
-                return insightFacade.removeDataset("ubc");
-            }).then((result) => {
-                expect(result).to.deep.equals("ubc");
+                return insightFacade.removeDataset("ubc").then((result) => {
+                    expect(result).to.deep.equals("ubc");
+                });
             });
         });
 
@@ -166,7 +170,7 @@ describe("InsightFacade", function () {
                     convertToBase64("test/resources/archives/Dataset2/courses.zip"),
                     InsightDatasetKind.Courses);
             }).then(() => {
-                return insightFacade.removeDataset("data set");
+                return insightFacade.removeDataset(" ");
             }).then(() => {
                 expect.fail("Failed to throw InsightError");
             }).catch((error) => {
@@ -189,6 +193,8 @@ describe("InsightFacade", function () {
 
     describe("listDatasets", function () {
         beforeEach(function () {
+            clearDatasets();
+            addDataDirectory();
             insightFacade = new InsightFacade();
         });
 
@@ -261,9 +267,14 @@ function convertToBase64(filePath: string): string {
     return fs.readFileSync(filePath, {encoding: 'base64'});
 }
 
+function addDataDirectory() {
+    const fs = require('fs-extra');
+    fs.mkdir("data");
+}
+
 function clearDatasets(): void {
     const fs = require('fs-extra');
-    fs.removeSync("../../data");
+    fs.removeSync("data");
 }
 
 testFolder<Input, Output, Error>(
