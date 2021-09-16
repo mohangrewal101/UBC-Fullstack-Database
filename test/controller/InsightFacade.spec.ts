@@ -3,7 +3,6 @@ import InsightFacade from "../../src/controller/InsightFacade";
 import chai, {expect} from "chai";
 import chaiAsPromised from "chai-as-promised";
 import {testFolder} from "@ubccpsc310/folder-test";
-import exp = require("constants");
 
 chai.use(chaiAsPromised);
 
@@ -34,10 +33,10 @@ describe("InsightFacade", function () {
             });
         });
 
-        it("should add dataset when list contains datasets and return array with ids", function () {
+        it("should add dataset when list contains dataset and return array with ids", function () {
             let expectedStrings = ["science", "ubc"];
             return insightFacade.addDataset("science",
-                convertToBase64("test/resources/archives/Dataset2/courses.zip"),
+                convertToBase64("test/resources/archives/Dataset1/courses.zip"),
                 InsightDatasetKind.Courses).then(() => {
                 insightFacade.addDataset("ubc",
                     convertToBase64("test/resources/archives/Dataset1/courses.zip"),
@@ -52,7 +51,7 @@ describe("InsightFacade", function () {
         it("should reject with InsightError when dataset has same id", function () {
 
             return insightFacade.addDataset("ubc",
-                convertToBase64("test/resources/archives/Dataset2/courses.zip"),
+                convertToBase64("test/resources/archives/Dataset1/courses.zip"),
                 InsightDatasetKind.Courses)
                 .then(() => {
                 return insightFacade.addDataset("ubc",
@@ -78,7 +77,7 @@ describe("InsightFacade", function () {
 
         it("should reject with InsightError when dataset has an whitespace id", function () {
             return insightFacade.addDataset(" ",
-                convertToBase64("test/resources/archives/Dataset2/courses.zip"),
+                convertToBase64("test/resources/archives/Dataset1/courses.zip"),
                 InsightDatasetKind.Courses).then(() => {
                 expect.fail("Failed to throw InsightError");
             }).catch((error) => {
@@ -94,7 +93,17 @@ describe("InsightFacade", function () {
             }).catch((error) => {
                 expect(error).to.be.instanceof(InsightError);
             });
-        })
+        });
+
+        it("should reject with InsightError if dataset kind is Rooms", function (){
+            return insightFacade.addDataset("ubc",
+                convertToBase64("test/resources/archives/Dataset1/courses.zip"),
+                InsightDatasetKind.Rooms).then(() => {
+                expect.fail("Failed to throw InsightError");
+            }).catch((error) => {
+                expect(error).to.be.instanceof(InsightError);
+            });
+        });
 
     });
 
@@ -126,7 +135,7 @@ describe("InsightFacade", function () {
                 convertToBase64("test/resources/archives/Dataset1/courses.zip"),
                 InsightDatasetKind.Courses).then(() => {
                 return insightFacade.addDataset("science",
-                    convertToBase64("test/resources/archives/Dataset2/courses.zip"),
+                    convertToBase64("test/resources/archives/Dataset1/courses.zip"),
                     InsightDatasetKind.Courses);
             }).then(() => {
                 return insightFacade.removeDataset("arts");
@@ -151,7 +160,7 @@ describe("InsightFacade", function () {
                 convertToBase64("test/resources/archives/Dataset1/courses.zip"),
                 InsightDatasetKind.Courses).then(() => {
                 return insightFacade.addDataset("science",
-                    convertToBase64("test/resources/archives/Dataset2/courses.zip"),
+                    convertToBase64("test/resources/archives/Dataset1/courses.zip"),
                     InsightDatasetKind.Courses);
             }).then(() => {
                 return insightFacade.removeDataset("ubc_");
@@ -168,7 +177,7 @@ describe("InsightFacade", function () {
                 convertToBase64("test/resources/archives/Dataset1/courses.zip"),
                 InsightDatasetKind.Courses).then(() => {
                 return insightFacade.addDataset("science",
-                    convertToBase64("test/resources/archives/Dataset2/courses.zip"),
+                    convertToBase64("test/resources/archives/Dataset1/courses.zip"),
                     InsightDatasetKind.Courses);
             }).then(() => {
                 return insightFacade.removeDataset(" ");
@@ -180,18 +189,6 @@ describe("InsightFacade", function () {
         });
     });
 
-    describe("performQuery", function () {
-        beforeEach(function () {
-            insightFacade = new InsightFacade();
-        });
-
-        afterEach(function () {
-            clearDatasets();
-        });
-
-
-    });
-
     describe("listDatasets", function () {
         beforeEach(function () {
             clearDatasets();
@@ -199,12 +196,11 @@ describe("InsightFacade", function () {
             insightFacade = new InsightFacade();
         });
 
-        afterEach(function () {
-            clearDatasets();
-        });
-
         it("should return zero datasets", function () {
-            return insightFacade.listDatasets().should.be.rejected;
+            return insightFacade.listDatasets().then((result) => {
+                expect(result).to.be.an.instanceof(Array);
+                expect(result).to.have.length(0);
+            });
         })
 
         it("should return one currently added dataset", function () {
@@ -234,7 +230,7 @@ describe("InsightFacade", function () {
             }
 
             const dataset2: InsightDataset = {
-                id: "ubcCourses",
+                id: "science",
                 kind: InsightDatasetKind.Courses,
                 numRows: 64612
             }
@@ -245,7 +241,7 @@ describe("InsightFacade", function () {
             return insightFacade.addDataset("ubc",
                 convertToBase64("test/resources/archives/Dataset1/courses.zip"),
                 InsightDatasetKind.Courses).then(() => {
-                return insightFacade.addDataset("ubcCourses",
+                return insightFacade.addDataset("science",
                     convertToBase64("test/resources/archives/Dataset1/courses.zip"), InsightDatasetKind.Courses);
             }).then(() => {
                 return insightFacade.listDatasets();
@@ -253,7 +249,7 @@ describe("InsightFacade", function () {
                 expect(result).to.be.an.instanceof(Array);
                 expect(result).to.have.length(2);
 
-                expect(result).to.be.equals(expected);
+                expect(result).to.equals(expected);
 
             });
         });
