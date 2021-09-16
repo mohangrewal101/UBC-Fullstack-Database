@@ -2,13 +2,9 @@ import {InsightDataset, InsightDatasetKind, InsightError, NotFoundError} from ".
 import InsightFacade from "../../src/controller/InsightFacade";
 import chai, {expect} from "chai";
 import chaiAsPromised from "chai-as-promised";
-import {testFolder} from "@ubccpsc310/folder-test";
 
 chai.use(chaiAsPromised);
 
-type Input = any;
-type Output = Promise<any[]>;
-type Error = any;
 
 let insightFacade: InsightFacade
 describe("InsightFacade", function () {
