@@ -79,25 +79,25 @@
 
     { "courses_dept": "adhe", "courses_id": "330", "courses_avg": 90.85 },
 
-    { "courses_dept": 'adhe', courses_id: '330', courses_avg: 91.29 },
+    { "courses_dept": "adhe", "courses_id": "330", "courses_avg": 91.29 },
 
-    { "courses_dept": 'adhe', courses_id: '330', courses_avg: 91.33 },
+    { "courses_dept": "adhe", "courses_id": "330", "courses_avg": 91.33 },
 
-    { "courses_dept": 'adhe', courses_id: '330', courses_avg: 91.33 },
+    { "courses_dept": "adhe", "courses_id": "330", "courses_avg": 91.33 },
 
-    { "courses_dept": 'adhe', courses_id: '330', courses_avg: 91.48 },
+    { "courses_dept": "adhe", "courses_id": "330", "courses_avg": 91.48 },
 
-    { "courses_dept": 'adhe', courses_id: '329', courses_avg: 92.54 },
+    { "courses_dept": "adhe", "courses_id": "329", "courses_avg": 92.54 },
 
-    { "courses_dept": 'adhe', courses_id: '329', courses_avg: 93.33 },
+    { "courses_dept": "adhe", "courses_id": "329", "courses_avg": 93.33 },
 
-    { "courses_dept": 'rhsc', courses_id: '501', courses_avg: 95 },
+    { "courses_dept": "rhsc", "courses_id": "501", "courses_avg": 95 },
 
-    { "courses_dept": 'bmeg', courses_id: '597', courses_avg: 95 },
+    { "courses_dept": "bmeg", "courses_id": "597", "courses_avg": 95 },
 
-    { "courses_dept": 'bmeg', courses_id: '597', courses_avg: 95 },
+    { "courses_dept": "bmeg", "courses_id": "597", "courses_avg": 95 },
 
-    { "courses_dept": 'cnps', courses_id: '535', courses_avg: 95 },
+    { "courses_dept": "cnps", "courses_id": "535", "courses_avg": 95 },
 
     { "courses_dept": "cnps", "courses_id": "535", "courses_avg": 95 },
 
