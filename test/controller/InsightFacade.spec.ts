@@ -1,10 +1,21 @@
-import {InsightDataset, InsightDatasetKind, InsightError, NotFoundError} from "../../src/controller/IInsightFacade";
+import {
+    InsightDataset,
+    InsightDatasetKind,
+    InsightError,
+    NotFoundError,
+    ResultTooLargeError
+} from "../../src/controller/IInsightFacade";
 import InsightFacade from "../../src/controller/InsightFacade";
 import chai, {expect} from "chai";
 import chaiAsPromised from "chai-as-promised";
+import {testFolder} from "@ubccpsc310/folder-test";
+import {describe} from "mocha";
 
 chai.use(chaiAsPromised);
 
+type Input = any;
+type Output = Promise<any[]>;
+type Error = "InsightError" | "ResultTooLargeError";
 
 let insightFacade: InsightFacade
 describe("InsightFacade", function () {
@@ -121,7 +132,7 @@ describe("InsightFacade", function () {
 
         it("should reject with InsightError if dataset directory is invalid", function () {
             return insightFacade.addDataset("ubc",
-                convertToBase64("test/resources/archives/InvalidFileNameDataset/NOTcourses.zip"),
+                convertToBase64("test/resources/archives/InvalidFileNameDataset/NOTCourses.zip"),
                 InsightDatasetKind.Courses).then(() => {
                 expect.fail("Failed to throw InsightError");
             }).catch((error) => {
@@ -288,6 +299,37 @@ describe("InsightFacade", function () {
 
             });
         });
+    });
+
+    describe("performQuery", function () {
+        beforeEach(function () {
+            clearDatasets();
+            addDataDirectory();
+            insightFacade = new InsightFacade();
+        });
+
+        function assertResult(expected: Output, actual: any): void {
+            expect(actual).to.equal(expected);
+        }
+
+        function assertError(expected: Error, actual: any): void {
+            if (expected === "InsightError") {
+                expect(actual).to.be.an.instanceOf(InsightError);
+            } else {
+                expect(actual).to.be.an.instanceOf(ResultTooLargeError);
+            }
+        }
+
+        testFolder<Input, Output, Error>(
+            "performQuery Tests",                   // suiteName
+            (input: Input): Output => {
+                return insightFacade.performQuery(input)    // target
+            },
+            "./test/resources/queries",              // path
+            {
+                assertOnResult: assertResult,
+                assertOnError: assertError,               // options
+            });
     });
 });
 
