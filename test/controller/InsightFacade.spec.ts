@@ -15,9 +15,7 @@ describe("InsightFacade", function () {
             insightFacade = new InsightFacade();
         });
 
-        afterEach(function () {
-            clearDatasets();
-        });
+
 
         it("should add first dataset and return array ONLY containing its id", function () {
             return insightFacade.addDataset("ubc",
@@ -110,9 +108,6 @@ describe("InsightFacade", function () {
             insightFacade = new InsightFacade();
         });
 
-        afterEach(function () {
-            clearDatasets();
-        });
 
         it("should identify and remove the correct dataset", function () {
 
