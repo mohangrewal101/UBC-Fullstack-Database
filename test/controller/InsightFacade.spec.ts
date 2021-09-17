@@ -257,27 +257,22 @@ describe("InsightFacade", function () {
                 InsightDatasetKind.Courses).then(() => {
                 return insightFacade.listDatasets();
             }).then((result) => {
-                expect(result).to.be.an.instanceof(Array);
-                expect(result).to.have.length(1);
-
-                expect(result[0]).to.deep.equals(expected);
+                expect(result).to.deep.equals([expected]);
             });
         });
 
         it("should return multiple currently added datasets", function () {
-            const dataset1: InsightDataset = {
-                id: "ubc",
-                kind: InsightDatasetKind.Courses,
-                numRows: 64612
-            }
-
-            const dataset2: InsightDataset = {
-                id: "science",
-                kind: InsightDatasetKind.Courses,
-                numRows: 64612
-            }
-
-            const expected = [dataset1, dataset2];
+            const expected: InsightDataset[] = [
+                {
+                    id: "ubc",
+                    kind: InsightDatasetKind.Courses,
+                    numRows: 64612
+                },
+                {
+                    id: "science",
+                    kind: InsightDatasetKind.Courses,
+                    numRows: 64612
+                }]
 
 
             return insightFacade.addDataset("ubc",
@@ -288,10 +283,8 @@ describe("InsightFacade", function () {
             }).then(() => {
                 return insightFacade.listDatasets();
             }).then((result) => {
-                expect(result).to.be.an.instanceof(Array);
+                expect(result).to.have.deep.members(expected);
                 expect(result).to.have.length(2);
-
-                expect(result).to.equals(expected);
 
             });
         });
