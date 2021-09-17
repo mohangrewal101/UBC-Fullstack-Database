@@ -1,0 +1,16 @@
+{
+  "title": "should return a ResultTooLargeError if where is empty and options is filled",
+  "input": {
+    "WHERE": {
+
+    },
+    "OPTIONS": {
+      "COLUMNS": [
+        "courses_dept"
+      ],
+      "ORDER": "courses_dept"
+    }
+  },
+  "errorExpected": true,
+  "with": "ResultTooLargeError"
+}

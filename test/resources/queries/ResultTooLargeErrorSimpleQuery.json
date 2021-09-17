@@ -1,0 +1,19 @@
+{
+  "title": "should return ResultTooLargeError for simple query",
+  "input": {
+    "WHERE": {
+      "GT": {
+        "courses_avg": 60
+      }
+    },
+    "OPTIONS": {
+      "COLUMNS": [
+        "courses_dept",
+        "courses_avg"
+      ],
+      "ORDER": "courses_avg"
+    }
+  },
+  "errorExpected": true,
+  "with": "ResultTooLargeError"
+}

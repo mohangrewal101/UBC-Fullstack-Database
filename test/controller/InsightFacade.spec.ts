@@ -306,6 +306,13 @@ describe("InsightFacade", function () {
             clearDatasets();
             addDataDirectory();
             insightFacade = new InsightFacade();
+            return insightFacade.addDataset("courses",
+                convertToBase64("test/resources/archives/Dataset1/courses.zip"),
+                InsightDatasetKind.Courses).then(() => {
+                return insightFacade.addDataset("ubc",
+                    convertToBase64("test/resources/archives/Dataset1/courses.zip"),
+                    InsightDatasetKind.Courses);
+            });
         });
 
         function assertResult(expected: Output, actual: any): void {

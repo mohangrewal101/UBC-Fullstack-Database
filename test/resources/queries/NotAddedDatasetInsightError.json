@@ -1,0 +1,19 @@
+{
+  "title": "should return InsightError if querying a dataset that is not added",
+  "input": {
+    "WHERE": {
+      "GT": {
+        "university_avg": 97
+      }
+    },
+    "OPTIONS": {
+      "COLUMNS": [
+        "university_dept",
+        "university_avg"
+      ],
+      "ORDER": "university_avg"
+    }
+  },
+  "errorExpected": true,
+  "with": "InsightError"
+}
