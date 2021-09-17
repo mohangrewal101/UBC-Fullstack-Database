@@ -52,6 +52,16 @@ describe("InsightFacade", function () {
             });
         });
 
+        it("should add dataset if most courses are valid", function () {
+            return insightFacade.addDataset("ubc",
+                convertToBase64("test/resources/archives/MostlyValidCoursesDataset/courses.zip"),
+                InsightDatasetKind.Courses).then((result) => {
+                expect(result).to.be.an.instanceof(Array);
+                expect(result).to.be.of.length(1);
+                expect(result[0]).to.deep.equals("ubc");
+            });
+        });
+
         it("should reject with InsightError when dataset has same id", function () {
 
             return insightFacade.addDataset("ubc",
@@ -103,6 +113,26 @@ describe("InsightFacade", function () {
             return insightFacade.addDataset("ubc",
                 convertToBase64("test/resources/archives/Dataset1/courses.zip"),
                 InsightDatasetKind.Rooms).then(() => {
+                expect.fail("Failed to throw InsightError");
+            }).catch((error) => {
+                expect(error).to.be.instanceof(InsightError);
+            });
+        });
+
+        it("should reject with InsightError if dataset directory is invalid", function () {
+            return insightFacade.addDataset("ubc",
+                convertToBase64("test/resources/archives/InvalidFileNameDataset/NOTcourses.zip"),
+                InsightDatasetKind.Courses).then(() => {
+                expect.fail("Failed to throw InsightError");
+            }).catch((error) => {
+                expect(error).to.be.instanceof(InsightError);
+            });
+        });
+
+        it("should reject with InsightError if all courses in dataset are invalid", function () {
+            return insightFacade.addDataset("ubc",
+                convertToBase64("test/resources/archives/AllCoursesInvalidDataset/courses.zip"),
+                InsightDatasetKind.Courses).then(() => {
                 expect.fail("Failed to throw InsightError");
             }).catch((error) => {
                 expect(error).to.be.instanceof(InsightError);
