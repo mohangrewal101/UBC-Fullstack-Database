@@ -1,5 +1,5 @@
 {
-  "title": "should return InsightError for incorrect spelling",
+  "title": "should return InsightError for incorrect spelling for GT",
   "input": {
 
     "WHERE":{

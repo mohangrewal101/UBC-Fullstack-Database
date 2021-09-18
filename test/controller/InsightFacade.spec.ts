@@ -293,6 +293,8 @@ describe("InsightFacade", function () {
 
     describe("performQuery", function () {
         before(function () {
+            clearDatasets();
+            addDataDirectory();
             insightFacade = new InsightFacade();
             return insightFacade.addDataset("courses",
                 convertToBase64("test/resources/archives/Dataset1/courses.zip"),
