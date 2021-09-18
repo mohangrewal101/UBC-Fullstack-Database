@@ -1,0 +1,7 @@
+{
+  "title": "should return InsightError for missing OPTIONS",
+  "input": {
+  },
+  "errorExpected": true,
+  "with": "InsightError"
+}

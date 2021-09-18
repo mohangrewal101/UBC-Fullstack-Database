@@ -1,0 +1,30 @@
+{
+  "title": "should return InsightError for empty EQ",
+  "input": {
+
+    "WHERE":{
+
+      "EQ":{
+
+      }
+
+    },
+
+    "OPTIONS":{
+
+      "COLUMNS":[
+
+        "courses_dept",
+
+        "courses_avg"
+
+      ],
+
+      "ORDER":"courses_avg"
+
+    }
+
+  },
+  "errorExpected": true,
+  "with": "InsightError"
+}

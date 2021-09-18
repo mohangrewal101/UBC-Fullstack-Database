@@ -1,9 +1,9 @@
 {
-  "title": "should perform query when IS has zero characters",
+  "title": "should give no result query",
   "input": {
     "WHERE": {
-      "IS": {
-        "courses_dept": ""
+      "GT": {
+        "courses_avg": 100
       }
     },
     "OPTIONS": {

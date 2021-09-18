@@ -1,12 +1,10 @@
 {
-  "title": "should give no result query",
+  "title": "should return InsightError for empty LT",
   "input": {
 
     "WHERE":{
 
-      "GT":{
-
-        "courses_avg":100
+      "LT":{
 
       }
 
@@ -25,8 +23,7 @@
       "ORDER":"courses_avg"
 
     }
-
   },
-  "errorExpected": false,
-  "with":[]
+  "errorExpected": true,
+  "with": "InsightError"
 }
