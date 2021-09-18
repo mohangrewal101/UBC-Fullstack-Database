@@ -90,6 +90,27 @@ describe("InsightFacade", function () {
 
         });
 
+        it("should reject with InsightError when dataset has same id but NOT adjacent", function () {
+
+            return insightFacade.addDataset("ubc",
+                convertToBase64("test/resources/archives/Dataset1/courses.zip"),
+                InsightDatasetKind.Courses)
+                .then(() => {
+                    return insightFacade.addDataset("science",
+                        convertToBase64("test/resources/archives/Dataset1/courses.zip"),
+                        InsightDatasetKind.Courses);
+                }).then(() => {
+                    return insightFacade.addDataset("ubc",
+                        convertToBase64("test/resources/archives/Dataset1/courses.zip"),
+                        InsightDatasetKind.Courses);
+                }).then(() => {
+                    expect.fail("Failed to throw InsightError");
+                }).catch((error) => {
+                    expect(error).to.be.instanceof(InsightError);
+                });
+
+        });
+
         it("should reject with InsightError when dataset has an underscore id", function () {
             return insightFacade.addDataset("_ubc",
                 convertToBase64("test/resources/archives/Dataset1/courses.zip"),
@@ -305,7 +326,7 @@ describe("InsightFacade", function () {
             });
         });
 
-        function assertResult(expected: Output, actual: any): void {
+        function assertResult(expected: Output, actual: Promise<any[]>): void {
             expect(actual).to.equal(expected);
         }
 
