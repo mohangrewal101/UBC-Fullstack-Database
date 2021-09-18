@@ -1,5 +1,5 @@
 {
-  "title": "should perform a simple query",
+  "title": "should give no result query",
   "input": {
 
     "WHERE":{

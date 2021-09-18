@@ -1,0 +1,20 @@
+{
+  "title": "should return InsightError if multiple keys are in GT",
+  "input": {
+    "WHERE": {
+      "GT": {
+        "courses_avg": 97,
+        "ubc_avg": 90
+      }
+    },
+    "OPTIONS": {
+      "COLUMNS": [
+        "courses_dept",
+        "ubc_avg"
+      ],
+      "ORDER": "courses_avg"
+    }
+  },
+  "errorExpected": true,
+  "with": "InsightError"
+}

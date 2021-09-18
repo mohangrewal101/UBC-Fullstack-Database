@@ -130,16 +130,6 @@ describe("InsightFacade", function () {
             });
         });
 
-        it("should reject with InsightError if dataset directory is invalid", function () {
-            return insightFacade.addDataset("ubc",
-                convertToBase64("test/resources/archives/InvalidFileNameDataset/NOTCourses.zip"),
-                InsightDatasetKind.Courses).then(() => {
-                expect.fail("Failed to throw InsightError");
-            }).catch((error) => {
-                expect(error).to.be.instanceof(InsightError);
-            });
-        });
-
         it("should reject with InsightError if all courses in dataset are invalid", function () {
             return insightFacade.addDataset("ubc",
                 convertToBase64("test/resources/archives/AllCoursesInvalidDataset/courses.zip"),
@@ -302,9 +292,7 @@ describe("InsightFacade", function () {
     });
 
     describe("performQuery", function () {
-        beforeEach(function () {
-            clearDatasets();
-            addDataDirectory();
+        before(function () {
             insightFacade = new InsightFacade();
             return insightFacade.addDataset("courses",
                 convertToBase64("test/resources/archives/Dataset1/courses.zip"),
