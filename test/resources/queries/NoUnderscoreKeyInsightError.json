@@ -1,0 +1,32 @@
+{
+  "title": "should give InsightError for no underscore keys",
+  "input": {
+
+    "WHERE":{
+
+      "GT":{
+
+        "coursesavg":97
+
+      }
+
+    },
+
+    "OPTIONS":{
+
+      "COLUMNS":[
+
+        "coursesdept",
+
+        "coursesavg"
+
+      ],
+
+      "ORDER":"coursesavg"
+
+    }
+
+  },
+  "errorExpected": true,
+  "with": "InsightError"
+}
