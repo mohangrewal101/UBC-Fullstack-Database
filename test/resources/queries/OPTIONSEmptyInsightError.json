@@ -1,0 +1,21 @@
+{
+  "title": "should return InsightError for empty OPTIONS",
+  "input": {
+
+    "WHERE":{
+
+      "GT":{
+
+        "courses_avg":97
+
+      }
+
+    },
+
+    "OPTIONS":{
+
+    }
+  },
+  "errorExpected": true,
+  "with": "InsightError"
+}

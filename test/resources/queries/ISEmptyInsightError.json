@@ -1,9 +1,9 @@
 {
-  "title": "should return insightError for double asterisk",
+  "title": "should return InsightError when IS is empty",
   "input": {
     "WHERE": {
       "IS": {
-        "courses_instructor": "e**"
+
       }
     },
     "OPTIONS": {
