@@ -1,11 +1,10 @@
 {
-  "errorMsg": "LT should only have 1 key, has 2",
-  "title": "should return InsightError for multiple keys in LT",
+  "errorMsg": "Invalid key type in GT",
+  "title": "should return InsightError for wrong GT type",
   "input": {
     "WHERE": {
-      "LT": {
-        "courses_avg": 97,
-        "courses_year": 2000
+      "GT": {
+        "courses_dept": "math"
       }
     },
     "OPTIONS": {

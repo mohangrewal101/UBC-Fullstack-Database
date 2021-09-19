@@ -1,0 +1,16 @@
+{
+  "errorMsg": "OPTIONS missing COLUMNS",
+  "title": "should return InsightError for missing COLUMNS",
+  "input": {
+    "WHERE": {
+      "GT": {
+        "courses_avg": 97
+      }
+    },
+    "OPTIONS": {
+      "ORDER": "courses_avg"
+    }
+  },
+  "errorExpected": true,
+  "with": "InsightError"
+}
