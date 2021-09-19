@@ -26,16 +26,6 @@ describe("InsightFacade", function () {
             insightFacade = new InsightFacade();
         });
 
-        it("should add empty dataset and return array ONLY containing its id", function () {
-            return insightFacade.addDataset("ubc",
-                convertToBase64("test/resources/archives/EmptyDataset/courses.zip"),
-                InsightDatasetKind.Courses).then((result) => {
-                expect(result).to.be.an.instanceof(Array);
-                expect(result).to.be.of.length(1);
-                expect(result[0]).to.deep.equals("ubc");
-            });
-        })
-
         it("should add first dataset and return array ONLY containing its id", function () {
             return insightFacade.addDataset("ubc",
                 convertToBase64("test/resources/archives/Dataset1/courses.zip"),
